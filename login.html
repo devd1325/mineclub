@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MineClub - Login</title>
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-page">
+
+    <a href="index.html" class="back-btn">- BACK</a>
+
+    <div class="login-container">
+        <div class="login-box">
+            <img src="./img/logo.png" class="login-icon" alt="Logo">
+            <h2>USER LOGIN</h2>
+            
+            <form id="login-form">
+                <div class="input-group">
+                    <label>USERNAME</label>
+                    <input type="text" id="username" placeholder="Enter your name" required>
+                </div>
+                
+                <div class="input-group">
+                    <label>PASSWORD</label>
+                    <input type="password" id="password" placeholder="********" required>
+                </div>
+                
+                <button type="submit" class="mc-button">LOGIN</button>
+            </form>
+            
+            <p class="signup-text">Don't have an account? <span class="green-text">Sign Up</span></p>
+        </div>
+    </div>
+
+    <script>
+        // كود معالجة الدخول وحفظ الاسم
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const user = document.getElementById('username').value;
+            
+            // حفظ الاسم في ذاكرة المتصفح
+            localStorage.setItem('username', user);
+            
+            // تنبيه نجاح الدخول والرجوع للرئيسية
+            alert("Welcome back, " + user + "!");
+            window.location.href = "index.html";
+        });
+    </script>
+
+</body>
+</html>

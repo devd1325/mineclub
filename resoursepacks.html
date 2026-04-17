@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MineClub | Resource Packs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    
+    <style>
+        /* إعدادات عامة موحدة */
+        body, html {
+            margin: 0; padding: 0;
+            background: #0b0f19; 
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            min-height: 100%;
+            overflow-x: hidden;
+        }
+
+        /* الخلفية الزرقاء المتدرجة (نفس المودز واللوجين) */
+        .page-wrapper {
+            background: radial-gradient(circle, #1a3a5a 0%, #050a14 100%);
+            min-height: 100vh;
+            padding: 120px 20px 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* عنوان الصفحة الرايق بالجراديانت الأخضر-الأزرق */
+        .main-title {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 2rem;
+            background: linear-gradient(45deg, #52FF52, #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        /* قسم البحث والفلاتر الموحد */
+        .filter-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 50px;
+            width: 100%;
+        }
+
+        .search-bar input { 
+            width: 320px; 
+            padding: 14px 25px; 
+            border-radius: 50px; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            background: rgba(255,255,255,0.05); 
+            color: white; 
+            outline: none; 
+            transition: 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-bar input:focus { 
+            border-color: #52FF52; 
+            box-shadow: 0 0 15px rgba(82, 255, 82, 0.3); 
+        }
+
+        .filter-select { 
+            padding: 12px 20px; 
+            border-radius: 8px; 
+            background: #1e293b; 
+            color: white; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            outline: none; 
+            margin: 0 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* شبكة الكروت (نفس المودز) */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        /* تنسيق الكرت الجديد مع الصورة */
+        .item-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 15px;
+            transition: 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* لمنع تمدد الصورة خارج الحدود */
+        }
+
+        .item-card:hover {
+            transform: translateY(-10px);
+            border-color: #52FF52;
+            background: rgba(82, 255, 82, 0.05);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+        }
+
+        /* حاوية الصورة */
+        .item-img-holder {
+            width: 100%;
+            height: 180px; /* تحديد ارتفاع مناسب للصورة */
+            overflow: hidden;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .item-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* لملء الحاوية دون تغيير الأبعاد */
+            transition: transform 0.5s ease;
+        }
+
+        .item-card:hover .item-img {
+            transform: scale(1.1); /* تأثير زوم بسيط عند التمرير */
+        }
+
+        /* محتوى الكرت (النصوص والأزرار) */
+        .item-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .item-card h3 {
+            color: #52FF52;
+            font-size: 18px;
+            margin: 0 0 10px 0;
+            font-family: 'Roboto', sans-serif;
+            font-weight: bold;
+        }
+
+        .item-card p {
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        /* التاج (الإصدار ونوع FPS) */
+        .tags-wrapper {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .type-tag {
+            background: rgba(82, 255, 82, 0.1);
+            color: #52FF52;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        /* الأزرار 3D الموحدة للأجهزة الضعيفة (2GB RAM) */
+        .mc-button {
+            text-decoration: none;
+            background: #52FF52;
+            color: #000;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            border: none;
+            border-bottom: 4px solid #38b338;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
+        }
+
+        .mc-button:active {
+            transform: translateY(2px);
+            border-bottom-width: 2px;
+        }
+
+        /* زر العودة للرئيسية */
+        .back-home {
+            margin-top: 50px;
+            text-decoration: none;
+            color: #52FF52;
+            font-weight: bold;
+            border: 1px solid #52FF52;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .back-home:hover {
+            background: #52FF52;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-wrapper">
+        <h1 class="main-title">RESOURCE PACKS</h1>
+
+        <div class="filter-wrapper">
+            <div class="search-bar">
+                <input type="text" id="packSearch" placeholder="Search pack name...">
+            </div>
+            
+            <div class="categories">
+                <select id="versionFilter" class="filter-select">
+                    <option value="all">All Versions</option>
+                    <option value="1.8.9">1.8.9</option>
+                    <option value="1.12.2">1.12.2</option>
+                    <option value="1.20.1">1.20.1</option>
+                </select>
+            </div>
+        </div>
+
+        <main class="grid-container" id="packsGrid">
+            
+            <div class="item-card" data-version="1.8.9">
+                <div class="item-img-holder">
+                    <img src="./img/Azure16x.jpg" alt="Azure Pack" class="item-img">
+                </div>
+                <div class="item-content">
+                    <div>
+                        <h3>Azure 16x</h3>
+                        <p>Clean blue themed PvP pack optimized for maximum performance and visibility.</p>
+                        <div class="tags-wrapper">
+                            <span class="type-tag">PvP / FPS</span>
+                        </div>
+                    </div>
+                    <a href="#" class="mc-button">DOWNLOAD</a>
+                </div>
+            </div>
+
+            <div class="item-card" data-version="1.12.2">
+                <div class="item-img-holder">
+                    <img src="./img/Faithful32x.jpg" alt="Faithful Pack" class="item-img">
+                </div>
+                <div class="item-content">
+                    <div>
+                        <h3>Faithful 32x</h3>
+                        <p>Stay true to the original Minecraft textures but with double the resolution.</p>
+                        <div class="tags-wrapper">
+                            <span class="type-tag">Default Edit</span>
+                        </div>
+                    </div>
+                    <a href="#" class="mc-button">DOWNLOAD</a>
+                </div>
+            </div>
+
+            <div class="item-card" data-version="1.20.1">
+                <div class="item-img-holder">
+                    <img src="./img/BareBones.jpg" alt="Bare Bones Pack" class="item-img">
+                </div>
+                <div class="item-content">
+                    <div>
+                        <h3>Bare Bones</h3>
+                        <p>The textures used in the official Minecraft trailers. Simple and vibrant.</p>
+                        <div class="tags-wrapper">
+                            <span class="type-tag">Modern</span>
+                        </div>
+                    </div>
+                    <a href="#" class="mc-button">DOWNLOAD</a>
+                </div>
+            </div>
+
+        </main>
+
+        <a href="index.html" class="back-home">BACK TO HOME</a>
+    </div>
+
+    <script>
+        const packSearch = document.getElementById('packSearch');
+        const versionFilter = document.getElementById('versionFilter');
+        const packCards = document.querySelectorAll('.item-card');
+
+        function filterItems() {
+            const searchText = packSearch.value.toLowerCase();
+            const versionValue = versionFilter.value;
+
+            packCards.forEach(card => {
+                // البحث في العنوان لتوافق الرام الضعيفة (2GB)
+                const title = card.querySelector('h3').innerText.toLowerCase();
+                const cardVersion = card.getAttribute('data-version');
+
+                const matchesSearch = title.includes(searchText);
+                const matchesVersion = versionValue === 'all' || cardVersion === versionValue;
+
+                // تحسين الأداء: استخدام display بدلاً من opacity للأنيميشن
+                if (matchesSearch && matchesVersion) {
+                    card.style.display = "flex";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+
+        packSearch.addEventListener('input', filterItems);
+        versionFilter.addEventListener('change', filterItems);
+    </script>
+</body>
+</html>

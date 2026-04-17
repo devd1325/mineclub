@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MineClub - Mods</title>
+    <link rel="icon" type="image/png" href="./img/logo.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <style>
+        /* تعديلات خاصة بهذه الصفحة لجعل الكتابة "رايقة" */
+        .content-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            background: radial-gradient(circle, #1a3a5a 0%, #050a14 100%); /* نفس الثيم الأزرق */
+        }
+
+        /* كيف تغير لون الكتابة وتخليها فخمة */
+        .cool-text {
+            font-family: 'Roboto', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            /* لون متدرج للكتابة (Gradient Text) */
+            background: linear-gradient(45deg, #52FF52, #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            
+            letter-spacing: 3px; /* تباعد الحروف يخليها رايقة */
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            opacity: 0; /* للأنيميشن */
+            transform: translateY(20px);
+        }
+
+        .sub-text {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+    </style>
+<div class="content-body">
+    <h1 class="cool-text" id="mainTitle">Mods Page</h1>
+    <p class="sub-text">Mods Under Maintenance.</p>
+    <br>
+    <a href="index.html" class="mc-button small">Back to Home</a>
+</div>
+<script>
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const title = document.getElementById('mainTitle');
+
+        // أنيميشن بسيط يخلي الكتابة تظهر بشكل ناعم
+        setTimeout(() => {
+            title.style.transition = "all 1s ease";
+            title.style.opacity = "1";
+            title.style.transform = "translateY(0)";
+        }, 300);
+
+        // وظيفة لتغيير اللون برمجياً إذا حبيت مستقبلاً
+        function changeTextColor(color) {
+            title.style.background = color;
+            title.style.webkitBackgroundClip = "text";
+        }
+        
+        // مثال: تغيير اللون عند الضغط (اختياري)
+        title.addEventListener('click', () => {
+            title.style.filter = "hue-rotate(90deg)";
+        });
+    });
+</script>
+</body>
+</html>
