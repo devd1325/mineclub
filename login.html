@@ -2,46 +2,108 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>MineCore - Login</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MINE CORE | Login</title>
     <style>
-        .login-box {
-            background: rgba(30, 41, 59, 0.8); padding: 40px; border-radius: 20px;
-            border: 1px solid #52FF52; width: 350px; text-align: center;
-            backdrop-filter: blur(10px);
+        /* CSS المدمج لصفحة اللوجين */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Press+Start+2P&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #0b0f19; /* نفس لون الخلفية في الصور */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Roboto', sans-serif;
+            color: white;
+            overflow: hidden;
         }
+
+        .login-box {
+            background: rgba(30, 41, 59, 0.4); /* تأثير زجاجي خفيف */
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid #52FF52; /* الإطار الأخضر المضيء */
+            width: 350px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(82, 255, 82, 0.1);
+        }
+
+        .login-title {
+            font-family: 'Press Start 2P', cursive;
+            color: #52FF52;
+            font-size: 18px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
         input {
-            width: 100%; padding: 12px; margin: 10px 0; background: #000;
-            border: 1px solid #334155; color: #fff; border-radius: 5px; box-sizing: border-box;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            background: #000;
+            border: 1px solid #334155;
+            color: #fff;
+            border-radius: 8px;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: #52FF52;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: #52FF52; /* الزر الأخضر */
+            color: #000;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        .login-btn:hover {
+            background: #45e645;
+            box-shadow: 0 0 15px #52FF52;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 25px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 13px;
+            transition: 0.3s;
+        }
+
+        .back-link:hover {
+            color: #52FF52;
         }
     </style>
 </head>
-<div class="login-box">
-    <h2 class="section-title">LOGIN</h2>
-    <form id="loginForm">
-        <input type="text" id="username" placeholder="Email or Username" required>
-        <input type="password" id="password" placeholder="Password" required>
-        <button type="submit" class="mc-button" style="width:100%; cursor:pointer;">SIGN UP / LOGIN</button>
-    </form>
-    <div id="msg" style="margin-top:10px; font-size:12px; color:#52FF52;"></div>
-    <a href="index.html" style="display:block; margin-top:20px; color:#94a3b8; text-decoration:none;">Back to Home</a>
-</div>
-    <script>
-        document.getElementById('loginForm').onsubmit = async (e) => {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+<body>
 
-            // إرسال البيانات للخادم لحفظها
-            const response = await fetch('/register', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            });
+    <div class="login-box">
+        <h2 class="login-title">LOGIN</h2>
+        
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Username / Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit" class="login-btn">SIGN UP / LOGIN</button>
+        </form>
 
-            const result = await response.text();
-            document.getElementById('msg').innerText = result;
-        };
-    </script>
+        <a href="index.html" class="back-link">Back to Home</a>
+    </div>
+
 </body>
 </html>
