@@ -16,18 +16,16 @@
         }
     </style>
 </head>
-<body style="display:flex; justify-content:center; align-items:center; height:100vh; background: #0b0f19;">
-    <div class="login-box">
-        <h2 class="section-title" style="font-family:'Press Start 2P'; color:#52FF52; font-size:18px;">LOGIN</h2>
-        <form id="loginForm">
-            <input type="text" id="username" placeholder="Username" required>
-            <input type="password" id="password" placeholder="Password" required>
-            <button type="submit" class="mc-button" style="width:100%; border:none; cursor:pointer; margin-top:10px;">SIGN UP / LOGIN</button>
-        </form>
-        <p id="msg" style="margin-top:15px; font-size:12px; color:#52FF52;"></p>
-        <p style="margin-top:20px; font-size:12px;"><a href="index.html" style="color:#94a3b8; text-decoration:none;">Back to Home</a></p>
-    </div>
-
+<div class="login-box">
+    <h2 class="section-title">LOGIN</h2>
+    <form id="loginForm">
+        <input type="text" id="username" placeholder="Email or Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="submit" class="mc-button" style="width:100%; cursor:pointer;">SIGN UP / LOGIN</button>
+    </form>
+    <div id="msg" style="margin-top:10px; font-size:12px; color:#52FF52;"></div>
+    <a href="index.html" style="display:block; margin-top:20px; color:#94a3b8; text-decoration:none;">Back to Home</a>
+</div>
     <script>
         document.getElementById('loginForm').onsubmit = async (e) => {
             e.preventDefault();
