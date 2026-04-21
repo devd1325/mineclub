@@ -1,37 +1,107 @@
-// --- ضع بياناتك هنا ---
-emailjs.init("YOUR_PUBLIC_KEY"); 
-const SERVICE_ID = "YOUR_SERVICE_ID";
-const TEMPLATE_ID = "YOUR_TEMPLATE_ID";
-const FB_URL = "https://minecore2026-default-rtdb.firebaseio.com/accounts.json";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MineCore - Sign Up</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Press+Start+2P&display=swap');
+        body { margin: 0; background: #0b0f19; height: 100vh; display: flex; justify-content: center; align-items: center; font-family: 'Roboto', sans-serif; color: white; }
+        .login-box { background: rgba(30, 41, 59, 0.4); padding: 30px; border-radius: 20px; border: 1px solid #52FF52; width: 380px; text-align: center; backdrop-filter: blur(10px); box-shadow: 0 0 20px rgba(82, 255, 82, 0.1); }
+        .login-title { font-family: 'Press Start 2P', cursive; color: #52FF52; font-size: 16px; margin-bottom: 25px; }
+        input { width: 100%; padding: 12px; margin-bottom: 12px; background: #000; border: 1px solid #334155; color: #fff; border-radius: 8px; box-sizing: border-box; outline: none; }
+        input:focus { border-color: #52FF52; }
+        .login-btn { width: 100%; background: #52FF52; color: #000; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
+        #status { margin-top: 15px; font-size: 12px; font-weight: bold; }
+        #verifySection { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid #334155; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2 class="login-title">CREATE ACCOUNT</h2>
+        
+        <form id="signupForm">
+            <input type="text" id="fullname" placeholder="Full Name" required>
+            <input type="number" id="age" placeholder="Age" required>
+            <input type="email" id="email" placeholder="Email Address" required>
+            <input type="password" id="pass" placeholder="Create Password" required>
+            <button type="submit" class="login-btn">Register & Send Code</button>
+        </form>
 
-let generatedCode = "";
+        <div id="verifySection">
+            <p style="font-size: 11px; color: #94a3b8;">Enter the 6-digit code sent to your email</p>
+            <input type="text" id="vCode" placeholder="000000" maxlength="6">
+            <button id="verifyBtn" class="login-btn" style="background: #fff;">Confirm Registration</button>
+        </div>
+        
+        <div id="status"></div>
+        <a href="login.html" style="display:block; margin-top:15px; color:#94a3b8; text-decoration:none; font-size:12px;">Already have an account? Login</a>
+    </div>
 
-document.getElementById('loginForm').onsubmit = function(e) {
-    e.preventDefault();
-    const status = document.getElementById('status');
-    const userEmail = document.getElementById('email').value;
-    
-    // توليد كود من 6 أرقام
-    generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
+    <script>
+        // ضع معلوماتك هنا
+        emailjs.init("YOUR_PUBLIC_KEY"); 
+        const SERVICE_ID = "service_ecugym9";
+        const TEMPLATE_ID = "template_tx3zt38";
+        const FB_URL = "https://minecore2026-default-rtdb.firebaseio.com/accounts.json";
 
-    status.style.color = "#52FF52";
-    status.innerText = "Sending code to " + userEmail + "...";
+        let generatedCode = "";
 
-    // إرسال البيانات لـ EmailJS (تأكد أن الأسماء تطابق التمبلت)
-    const templateParams = {
-        email: userEmail,       // يطابق {{email}} في صورتك
-        passcode: generatedCode, // يطابق {{passcode}} في صورتك
-        time: new Date().toLocaleTimeString() // يطابق {{time}} في صورتك
-    };
+        // المرحلة 1: إرسال الكود
+        document.getElementById('signupForm').onsubmit = function(e) {
+            e.preventDefault();
+            const status = document.getElementById('status');
+            const userEmail = document.getElementById('email').value;
+            generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
 
-    emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams)
-    .then(() => {
-        status.innerText = "Code sent! Please check your email.";
-        document.getElementById('loginForm').style.display = "none";
-        document.getElementById('verifySection').style.display = "block";
-    }).catch((error) => {
-        status.style.color = "#ff4444";
-        status.innerText = "Error: Check your EmailJS IDs.";
-        console.log("FAILED...", error);
-    });
-};
+            status.style.color = "#52FF52";
+            status.innerText = "Sending code...";
+
+            // تأكد أن الأسماء تطابق التمبلت في EmailJS ({{email}} و {{passcode}})
+            emailjs.send(SERVICE_ID, TEMPLATE_ID, {
+                email: userEmail,
+                passcode: generatedCode,
+                time: new Date().toLocaleTimeString()
+            }).then(() => {
+                status.innerText = "Code sent! Check your inbox.";
+                document.getElementById('signupForm').style.display = "none";
+                document.getElementById('verifySection').style.display = "block";
+            }).catch(() => {
+                status.style.color = "#ff4444";
+                status.innerText = "Error sending email!";
+            });
+        };
+
+        // المرحلة 2: التحقق وحفظ "كل" البيانات
+        document.getElementById('verifyBtn').onclick = async function() {
+            const inputCode = document.getElementById('vCode').value;
+            const status = document.getElementById('status');
+
+            if (inputCode === generatedCode) {
+                status.innerText = "Creating your account...";
+                
+                const userData = {
+                    name: document.getElementById('fullname').value,
+                    age: document.getElementById('age').value,
+                    email: document.getElementById('email').value,
+                    password: document.getElementById('pass').value,
+                    signup_date: new Date().toLocaleString()
+                };
+
+                // حفظ البيانات في Firebase
+                await fetch(FB_URL, { 
+                    method: 'POST', 
+                    body: JSON.stringify(userData),
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                status.innerText = "Account Created Successfully!";
+                setTimeout(() => { window.location.href = "login.html"; }, 2000);
+            } else {
+                status.style.color = "#ff4444";
+                status.innerText = "Invalid Code!";
+            }
+        };
+    </script>
+</body>
+</html>
