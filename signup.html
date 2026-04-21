@@ -1,0 +1,37 @@
+// --- ضع بياناتك هنا ---
+emailjs.init("YOUR_PUBLIC_KEY"); 
+const SERVICE_ID = "YOUR_SERVICE_ID";
+const TEMPLATE_ID = "YOUR_TEMPLATE_ID";
+const FB_URL = "https://minecore2026-default-rtdb.firebaseio.com/accounts.json";
+
+let generatedCode = "";
+
+document.getElementById('loginForm').onsubmit = function(e) {
+    e.preventDefault();
+    const status = document.getElementById('status');
+    const userEmail = document.getElementById('email').value;
+    
+    // توليد كود من 6 أرقام
+    generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+    status.style.color = "#52FF52";
+    status.innerText = "Sending code to " + userEmail + "...";
+
+    // إرسال البيانات لـ EmailJS (تأكد أن الأسماء تطابق التمبلت)
+    const templateParams = {
+        email: userEmail,       // يطابق {{email}} في صورتك
+        passcode: generatedCode, // يطابق {{passcode}} في صورتك
+        time: new Date().toLocaleTimeString() // يطابق {{time}} في صورتك
+    };
+
+    emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams)
+    .then(() => {
+        status.innerText = "Code sent! Please check your email.";
+        document.getElementById('loginForm').style.display = "none";
+        document.getElementById('verifySection').style.display = "block";
+    }).catch((error) => {
+        status.style.color = "#ff4444";
+        status.innerText = "Error: Check your EmailJS IDs.";
+        console.log("FAILED...", error);
+    });
+};
