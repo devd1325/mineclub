@@ -35,7 +35,7 @@
     </div>
 
     <script>
-        emailjs.init("YOUR_PUBLIC_KEY"); // حط مفتاحك هنا
+        emailjs.init("gWPVwp_AdEm3E6skj"); // حط مفتاحك هنا
         let generatedCode = ""; 
 
         const avatars = [
@@ -46,7 +46,7 @@
         document.getElementById('signupForm').onsubmit = function(e) {
             e.preventDefault();
             generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
-            emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
+            emailjs.send("service_ecugym9", "template_tx3zt38", {
                 email: document.getElementById('email').value,
                 passcode: generatedCode,
                 time: new Date().toLocaleTimeString()
