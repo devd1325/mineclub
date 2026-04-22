@@ -4,6 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MineClub - Home</title>
+    <script>
+    window.onload = function() {
+        // فحص هل المستخدم مسجل دخول مسبقاً؟
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+        const userData = JSON.parse(localStorage.getItem('minecore_user'));
+
+        if (isLoggedIn === 'true' && userData) {
+            // 1. إخفاء زر LOGIN وإظهار صورة المستخدم واسمه
+            const authContainer = document.getElementById('auth-container');
+            const userBrand = document.getElementById('user-brand');
+            const avatarImg = document.getElementById('user-avatar');
+
+            // تحديث الصورة في الهيدر (الجهة اليسرى بدل اللوجو)
+            avatarImg.src = userData.avatar;
+            avatarImg.style.display = "block";
+
+            // تحديث جهة اليمين ليظهر اسم المستخدم بدل كلمة LOGIN
+            authContainer.innerHTML = `
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <span style="color:#52FF52; font-size:12px; font-weight:bold;">${userData.name}</span>
+                    <button onclick="logout()" style="background:none; border:none; color:#ff4444; cursor:pointer; font-size:10px;">Logout</button>
+                </div>
+            `;
+        }
+    };
+
+    // دالة تسجيل الخروج (لو حب يمسح بياناته ويسجل من جديد)
+    function logout() {
+        localStorage.clear(); // يمسح كل شيء محفوظ
+        location.reload();    // يرجع الصفحة لوضعها الأصلي (تظهر كلمة LOGIN)
+    }
+</script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Press+Start+2P&display=swap');
 
