@@ -6,54 +6,70 @@
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Press+Start+2P&display=swap');
-        body { margin: 0; background: #0b0f19; height: 100vh; display: flex; justify-content: center; align-items: center; font-family: 'Roboto', sans-serif; color: white; }
-        .box { background: rgba(30, 41, 59, 0.4); padding: 30px; border-radius: 20px; border: 1px solid #52FF52; width: 380px; text-align: center; backdrop-filter: blur(10px); }
+        body { 
+            margin: 0; 
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://wallpaperaccess.com/full/1271164.jpg'); 
+            background-size: cover; background-position: center;
+            height: 100vh; display: flex; justify-content: center; align-items: center; 
+            font-family: 'Roboto', sans-serif; color: white; 
+        }
+        .box { background: rgba(15, 23, 42, 0.8); padding: 30px; border-radius: 20px; border: 1px solid #52FF52; width: 380px; text-align: center; backdrop-filter: blur(15px); box-shadow: 0 0 30px rgba(82, 255, 82, 0.2); }
         .title { font-family: 'Press Start 2P', cursive; color: #52FF52; font-size: 16px; margin-bottom: 25px; }
-        input { width: 100%; padding: 12px; margin-bottom: 12px; background: #000; border: 1px solid #334155; color: #fff; border-radius: 8px; box-sizing: border-box; outline: none; }
-        input[type="date"] { color-scheme: dark; }
-        .btn { width: 100%; background: #52FF52; color: #000; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; }
+        input { width: 100%; padding: 12px; margin-bottom: 12px; background: rgba(0,0,0,0.6); border: 1px solid #334155; color: #fff; border-radius: 8px; box-sizing: border-box; outline: none; transition: 0.3s; }
+        input:focus { border-color: #52FF52; box-shadow: 0 0 10px rgba(82,255,82,0.3); }
+        input[type="date"] { color-scheme: dark; cursor: pointer; }
+        .btn { width: 100%; background: #52FF52; color: #000; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
+        .btn:hover { background: #fff; transform: translateY(-2px); }
         #verifySection { display: none; margin-top: 20px; border-top: 1px solid #334155; padding-top: 20px; }
+        label { display: block; text-align: left; font-size: 11px; color: #52FF52; margin: 0 0 5px 5px; font-weight: bold; }
     </style>
 </head>
 <body>
     <div class="box">
-        <h2 class="title">SIGN UP</h2>
+        <h2 class="title">CREATE ACCOUNT</h2>
         <form id="signupForm">
             <input type="text" id="fname" placeholder="Full Name" required>
-            <label style="display:block; text-align:left; font-size:10px; color:#52FF52; margin:5px;">Birth Date:</label>
+            <label>BIRTH DATE:</label>
             <input type="date" id="dob" required>
-            <input type="email" id="email" placeholder="Email" required>
+            <input type="email" id="email" placeholder="Email Address" required>
             <input type="password" id="pass" placeholder="Password" required>
-            <button type="submit" class="btn">Send Code</button>
+            <button type="submit" class="btn">Send Verification Code</button>
         </form>
 
         <div id="verifySection">
-            <input type="text" id="vCode" placeholder="Enter 6-digit code" maxlength="6">
-            <button id="verifyBtn" class="btn" style="background: #fff;">Verify & Register</button>
+            <input type="text" id="vCode" placeholder="6-Digit Code" maxlength="6">
+            <button id="verifyBtn" class="btn" style="background: #fff;">Confirm & Register</button>
         </div>
         <div id="status" style="margin-top:15px; font-size:12px;"></div>
     </div>
 
     <script>
-        emailjs.init("gWPVwp_AdEm3E6skj"); // حط مفتاحك هنا
-        let generatedCode = ""; 
+        // تحديد أقصى تاريخ مسموح به (تاريخ اليوم) لمنع سنوات مثل 6000
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('dob').setAttribute('max', today);
 
-        const avatars = [
-            "https://i.ibb.co/Xz9S0m4/av1.png", "https://i.ibb.co/M9fK5z1/av2.png",
-            "https://i.ibb.co/PZ0v3Y9/av3.png", "https://i.ibb.co/vD7H8Gz/av4.png"
-        ];
+        emailjs.init("YOUR_PUBLIC_KEY"); 
+        let generatedCode = ""; 
+        const avatars = ["https://i.ibb.co/Xz9S0m4/av1.png", "https://i.ibb.co/M9fK5z1/av2.png", "https://i.ibb.co/PZ0v3Y9/av3.png", "https://i.ibb.co/vD7H8Gz/av4.png"];
 
         document.getElementById('signupForm').onsubmit = function(e) {
             e.preventDefault();
+            const birthYear = new Date(document.getElementById('dob').value).getFullYear();
+            
+            // حماية إضافية ضد السنوات الغريبة
+            if (birthYear > new Date().getFullYear() || birthYear < 1900) {
+                alert("Please enter a valid birth year!");
+                return;
+            }
+
             generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
-            emailjs.send("service_ecugym9", "template_tx3zt38", {
+            emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
                 email: document.getElementById('email').value,
-                passcode: generatedCode,
-                time: new Date().toLocaleTimeString()
+                passcode: generatedCode
             }).then(() => {
                 document.getElementById('signupForm').style.display = "none";
                 document.getElementById('verifySection').style.display = "block";
-                document.getElementById('status').innerText = "Code sent!";
+                document.getElementById('status').innerText = "Check your email!";
             });
         };
 
@@ -69,9 +85,9 @@
                 await fetch("https://minecore2026-default-rtdb.firebaseio.com/accounts.json", {
                     method: 'POST', body: JSON.stringify(userData)
                 });
-                alert("Success!");
+                alert("Account Created!");
                 window.location.href = "login.html";
-            } else { alert("Wrong code!"); }
+            } else { alert("Code Incorrect!"); }
         };
     </script>
 </body>
