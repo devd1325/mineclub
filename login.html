@@ -4,85 +4,42 @@
     <meta charset="UTF-8">
     <title>MineCore - Login</title>
     <style>
+        /* نفس الستايل اللي فوق */
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Press+Start+2P&display=swap');
-        
-        body {
-            margin: 0; background: #0b0f19; height: 100vh;
-            display: flex; justify-content: center; align-items: center;
-            font-family: 'Roboto', sans-serif; color: white;
-        }
-
-        .login-box {
-            background: rgba(30, 41, 59, 0.4); padding: 40px; border-radius: 20px;
-            border: 1px solid #52FF52; width: 350px; text-align: center;
-            backdrop-filter: blur(10px); box-shadow: 0 0 20px rgba(82, 255, 82, 0.1);
-        }
-
-        .login-title {
-            font-family: 'Press Start 2P', cursive; color: #52FF52;
-            font-size: 18px; margin-bottom: 30px;
-        }
-
-        input {
-            width: 100%; padding: 12px; margin-bottom: 15px; background: #000;
-            border: 1px solid #334155; color: #fff; border-radius: 8px;
-            box-sizing: border-box; outline: none;
-        }
-
-        .login-btn {
-            width: 100%; background: #52FF52; color: #000; border: none;
-            padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;
-            text-transform: uppercase;
-        }
-
-        #status { margin-top: 15px; font-size: 12px; font-weight: bold; }
+        body { margin: 0; background: #0b0f19; height: 100vh; display: flex; justify-content: center; align-items: center; font-family: 'Roboto', sans-serif; color: white; }
+        .box { background: rgba(30, 41, 59, 0.4); padding: 40px; border-radius: 20px; border: 1px solid #52FF52; width: 350px; text-align: center; backdrop-filter: blur(10px); }
+        .title { font-family: 'Press Start 2P', cursive; color: #52FF52; font-size: 18px; margin-bottom: 30px; }
+        input { width: 100%; padding: 12px; margin-bottom: 15px; background: #000; border: 1px solid #334155; color: #fff; border-radius: 8px; box-sizing: border-box; outline: none; }
+        .btn { width: 100%; background: #52FF52; color: #000; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
-
-    <div class="login-box">
-        <h2 class="login-title">LOGIN</h2>
+    <div class="box">
+        <h2 class="title">LOGIN</h2>
         <form id="loginForm">
-            <input type="text" id="user" placeholder="Username" required>
+            <input type="email" id="email" placeholder="Email" required>
             <input type="password" id="pass" placeholder="Password" required>
-            <button type="submit" class="login-btn">SIGN UP / LOGIN</button>
+            <button type="submit" class="btn">Login</button>
         </form>
-        <div id="status"></div>
-        <a href="index.html" style="display:block; margin-top:20px; color:#94a3b8; text-decoration:none; font-size:12px;">Back to Home</a>
+        <div id="status" style="margin-top:15px; font-size:12px;"></div>
     </div>
 
     <script>
-        // الرابط الخاص بك مدمج وجاهز
-        const DATABASE_URL = "https://minecore2026-default-rtdb.firebaseio.com/accounts.json";
-
         document.getElementById('loginForm').onsubmit = async function(e) {
             e.preventDefault();
-            const status = document.getElementById('status');
-            const data = {
-                username: document.getElementById('user').value,
-                password: document.getElementById('pass').value,
-                time: new Date().toLocaleString()
-            };
-
-            status.style.color = "#52FF52";
-            status.innerText = "Sending to Firebase...";
-
-            try {
-                const res = await fetch(DATABASE_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(data),
-                    headers: { 'Content-Type': 'application/json' }
-                });
-
-                if(res.ok) {
-                    status.innerText = "Done! Check your Firebase Database.";
-                    document.getElementById('loginForm').reset();
-                } else {
-                    throw new Error();
-                }
-            } catch (err) {
-                status.style.color = "#ff4444";
-                status.innerText = "Error! Check Firebase Rules (Test Mode).";
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('pass').value;
+            
+            const res = await fetch("https://minecore2026-default-rtdb.firebaseio.com/accounts.json");
+            const data = await res.json();
+            
+            let user = Object.values(data).find(u => u.email === email && u.password === pass);
+            
+            if (user) {
+                localStorage.setItem('user', JSON.stringify(user));
+                window.location.href = "index.html";
+            } else {
+                document.getElementById('status').innerText = "Wrong email or password!";
             }
         };
     </script>
