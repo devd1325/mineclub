@@ -2,10 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>MineCore - Login</title>
-        <link rel="icon" type="image/png" href="./image.png">
+    <title>MineClub - Login</title>
     <style>
-        /* نفس الستايل اللي فوق */
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Press+Start+2P&display=swap');
         body { margin: 0; background: #0b0f19; height: 100vh; display: flex; justify-content: center; align-items: center; font-family: 'Roboto', sans-serif; color: white; }
         .box { background: rgba(30, 41, 59, 0.4); padding: 40px; border-radius: 20px; border: 1px solid #52FF52; width: 350px; text-align: center; backdrop-filter: blur(10px); }
@@ -30,29 +28,19 @@
             e.preventDefault();
             const email = document.getElementById('email').value;
             const pass = document.getElementById('pass').value;
-            
             const res = await fetch("https://minecore2026-default-rtdb.firebaseio.com/accounts.json");
             const data = await res.json();
             
-            let user = Object.values(data).find(u => u.email === email && u.password === pass);
+            let user = Object.values(data || {}).find(u => u.email === email && u.password === pass);
             
             if (user) {
-                localStorage.setItem('user', JSON.stringify(user));
+                // حفظ البيانات في المتصفح للأبد (حتى يسوي Logout)
+                localStorage.setItem('minecore_user', JSON.stringify(user));
                 window.location.href = "index.html";
             } else {
                 document.getElementById('status').innerText = "Wrong email or password!";
             }
-        }
-        // داخل دالة الـ login الناجحة في login.html
-if (userFound) {
-    // حفظ بيانات المستخدم كاملة في المتصفح
-    localStorage.setItem('minecore_user', JSON.stringify(userFound));
-    // حفظ حالة تسجيل الدخول عشان ما يطلبها تاني
-    localStorage.setItem('isLoggedIn', 'true'); 
-    
-    status.innerText = "Logged in! Redirecting...";
-    setTimeout(() => { window.location.href = "index.html"; }, 1500);
-};
+        };
     </script>
 </body>
 </html>
