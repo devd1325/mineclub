@@ -42,7 +42,17 @@
             } else {
                 document.getElementById('status').innerText = "Wrong email or password!";
             }
-        };
+        }
+        // داخل دالة الـ login الناجحة في login.html
+if (userFound) {
+    // حفظ بيانات المستخدم كاملة في المتصفح
+    localStorage.setItem('minecore_user', JSON.stringify(userFound));
+    // حفظ حالة تسجيل الدخول عشان ما يطلبها تاني
+    localStorage.setItem('isLoggedIn', 'true'); 
+    
+    status.innerText = "Logged in! Redirecting...";
+    setTimeout(() => { window.location.href = "index.html"; }, 1500);
+};
     </script>
 </body>
 </html>
