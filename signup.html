@@ -7,35 +7,72 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Press+Start+2P&display=swap');
         
-        /* هنا الخلفية الجديدة الفخمة (تدرجات الأسود/الرمادي) */
+        /* الخلفية الفخمة بنقشة الخطوط المخفية */
         body { 
             margin: 0; 
-            /* خلفية بتدرج دائري بين الأسود الغامق جداً والرمادي المزرق */
-            background: radial-gradient(circle at center, #1a1e2e 0%, #0b0f19 100%); 
+            background-color: #0b0f19; /* اللون الغامق الأساسي */
+            /* نقشة خطوط متقاطعة خفيفة جداً وشبه مخفية */
+            background-image: 
+                linear-gradient(rgba(82, 255, 82, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(82, 255, 82, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px; /* حجم المربعات */
+            background-position: center;
+            
             height: 100vh; display: flex; justify-content: center; align-items: center; 
             font-family: 'Roboto', sans-serif; color: white; 
         }
 
-        /* بوكس التسجيل مع إضاءة خفيفة */
+        /* بوكس التسجيل */
         .box { 
-            background: rgba(15, 23, 42, 0.6); /* خلفية شبه شفافة للبوكس */
+            background: rgba(15, 23, 42, 0.8); /* خلفية داكنة وشبه شفافة */
             padding: 30px; 
             border-radius: 20px; 
-            border: 1px solid rgba(82, 255, 82, 0.2); /* حدود نيون خضراء خفيفة */
+            border: 1px solid rgba(82, 255, 82, 0.3); /* حدود نيون خضراء */
             width: 380px; text-align: center; 
-            backdrop-filter: blur(15px); /* تأثير الزجاج المغبش */
+            backdrop-filter: blur(10px); /* تأثير الزجاج المغبش */
             /* إضاءة "نيون" خفيفة طالعة من البوكس */
             box-shadow: 0 0 30px rgba(82, 255, 82, 0.1); 
         }
 
         .title { font-family: 'Press Start 2P', cursive; color: #52FF52; font-size: 16px; margin-bottom: 25px; }
-        input { width: 100%; padding: 12px; margin-bottom: 12px; background: rgba(0,0,0,0.6); border: 1px solid #334155; color: #fff; border-radius: 8px; box-sizing: border-box; outline: none; transition: 0.3s; }
+        
+        /* استايل حقول الإدخال */
+        input { 
+            width: 100%; 
+            padding: 12px; 
+            margin-bottom: 12px; 
+            background: rgba(0, 0, 0, 0.6); 
+            border: 1px solid #334155; 
+            color: #fff; 
+            border-radius: 8px; 
+            box-sizing: border-box; 
+            outline: none; 
+            transition: 0.3s; 
+        }
         input:focus { border-color: #52FF52; box-shadow: 0 0 10px rgba(82,255,82,0.3); }
         input[type="date"] { color-scheme: dark; cursor: pointer; }
-        .btn { width: 100%; background: #52FF52; color: #000; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1); /* جعل أيقونة التقويم بيضاء */
+        }
+        
+        /* زر الإرسال الأخضر */
+        .btn { 
+            width: 100%; 
+            background: #52FF52; 
+            color: #000; 
+            border: none; 
+            padding: 12px; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            text-transform: uppercase; 
+            transition: 0.3s; 
+        }
         .btn:hover { background: #fff; transform: translateY(-2px); }
+        
         #verifySection { display: none; margin-top: 20px; border-top: 1px solid #334155; padding-top: 20px; }
         label { display: block; text-align: left; font-size: 11px; color: #52FF52; margin: 0 0 5px 5px; font-weight: bold; }
+        #status { margin-top: 15px; font-size: 12px; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -54,7 +91,7 @@
             <input type="text" id="vCode" placeholder="6-Digit Code" maxlength="6">
             <button id="verifyBtn" class="btn" style="background: #fff;">Confirm & Register</button>
         </div>
-        <div id="status" style="margin-top:15px; font-size:12px;"></div>
+        <div id="status"></div>
     </div>
 
     <script>
@@ -62,12 +99,18 @@
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('dob').setAttribute('max', today);
 
+        // هنا تضع Public Key الخاص بك
         emailjs.init("YOUR_PUBLIC_KEY"); 
+        
         let generatedCode = ""; 
         const avatars = ["https://i.ibb.co/Xz9S0m4/av1.png", "https://i.ibb.co/M9fK5z1/av2.png", "https://i.ibb.co/PZ0v3Y9/av3.png", "https://i.ibb.co/vD7H8Gz/av4.png"];
 
         document.getElementById('signupForm').onsubmit = function(e) {
             e.preventDefault();
+            const status = document.getElementById('status');
+            status.style.color = "#52FF52";
+            status.innerText = "Generating code...";
+            
             const dobInput = document.getElementById('dob');
             const birthYear = new Date(dobInput.value).getFullYear();
             
@@ -79,13 +122,19 @@
             }
 
             generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
+            
+            // تفعيل الإرسال (تأكد من تفعيل الخدمة في EmailJS أولاً)
             emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
                 email: document.getElementById('email').value,
                 passcode: generatedCode
             }).then(() => {
                 document.getElementById('signupForm').style.display = "none";
                 document.getElementById('verifySection').style.display = "block";
-                document.getElementById('status').innerText = "Check your email!";
+                status.innerText = "Code sent! Check your email.";
+            }).catch((error) => {
+                status.style.color = "#ff4444";
+                status.innerText = "Error sending email!";
+                console.log(error);
             });
         };
 
@@ -98,9 +147,12 @@
                     email: document.getElementById('email').value,
                     password: document.getElementById('pass').value
                 };
+                
+                // حفظ البيانات في Firebase
                 await fetch("https://minecore2026-default-rtdb.firebaseio.com/accounts.json", {
                     method: 'POST', body: JSON.stringify(userData)
                 });
+                
                 alert("Account Created!");
                 window.location.href = "login.html";
             } else { alert("Code Incorrect!"); }
