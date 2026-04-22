@@ -3,101 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="./image.png">
     <title>MineClub - Home</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body class="scroll-disabled">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Press+Start+2P&display=swap');
 
-    <audio id="welcome-sound" src="./krnbeatz-dawn-logo-430179.mp3" preload="auto"></audio>
-<center>
-    <div id="splash-screen">
-        <div class="splash-content">
-            <img src="./logo.png" alt="Logo" class="entrance-logo"> 
-            <h1 class="splash-text">MINE CLUB</h1>
-            
-            <div class="loader-container">
-                <div class="loader-bar"></div>
-            </div>
+        body { margin: 0; background: #0b0f19; color: white; font-family: 'Roboto', sans-serif; }
 
-            <button id="enter-btn">CLICK TO CONTINUE</button>
-            <p class="ghost-text">Please Click To Continue...</p>
-        </div>
-    </div>
-</center>
-<center>
-    <div id="main-site" class="hidden">
-        <header class="main-header">
-            <div class="logo-area">
-                <img src="./logo.png" alt="Logo" class="site-logo"> 
-                <span class="logo-text">MineClub</span>
-            </div>
-            <nav class="nav-links">
-                <a href="resoursepacks.html" class="nav-item">Packs</a>
-                <a href="under.html" class="nav-item">Under Maintance</a>
-                <a href="mods.html" class="nav-item">Mods</a>
-                <a href="https://discord.gg/BlanckTm" class="nav-item">Discord</a>
-                <div id="nav-auth" class="user-area">
-    <a href="login.html" style="color:#52FF52; text-decoration:none; font-weight:bold;">LOGIN</a>
-</div>
-            </nav>
-        </header>
-</center>
-        <section class="hero-section">
-            <div class="hero-content">
-                <h1 class="hero-title">BEST MINECRAFT ASSETS WEBSITE</h1>
-                <p class="hero-subtitle">The ultimate collection for FPS and PvP performance.</p>
-                <div class="hero-buttons">
-                    <a href="resoursepacks.html" class="mc-button">Get Packs</a>
-                    <a href="mods.html" class="mc-button">Get Mods</a>
-                </div>
-            </div>
-        </section>
-    </div>
+        /* ستايل الهيدر اللي في صورتك */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background: rgba(30, 41, 59, 0.2);
+            border: 1px solid rgba(82, 255, 82, 0.2);
+            border-radius: 50px; /* الحواف الدائرية للهيدر */
+            margin: 20px auto;
+            width: 90%;
+            backdrop-filter: blur(10px);
+        }
 
-    <script>
-        const splash = document.getElementById('splash-screen');
-        const mainSite = document.getElementById('main-site');
-        const enterBtn = document.getElementById('enter-btn');
-        const audio = document.getElementById('welcome-sound');
+        /* حاوية صورة البروفايل (بدل اللوجو القديم) */
+        #user-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
 
-        enterBtn.addEventListener('click', () => {
-            // تشغيل الصوت عند الضغط
-            audio.play().catch(e => console.log("Sound error: ", e));
-            
-            splash.classList.add('fade-out');
-            setTimeout(() => {
-                splash.style.display = 'none';
-                mainSite.classList.remove('hidden');
-                mainSite.classList.add('fade-in');
-                document.body.classList.remove('scroll-disabled');
-                document.body.classList.add('scroll-enabled');
-            }, 800);
-        });
-    </script>
-    <script>
-    // 1. نجيب بيانات الرجال من ذاكرة المتصفح
-    const loggedUser = JSON.parse(localStorage.getItem('minecore_user'));
+        #user-brand img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid #52FF52;
+            object-fit: cover;
+            display: none; /* مخفية لحد ما يسجل دخول */
+        }
 
-    // 2. إذا الرجال موجود (يعني مسجل دخول)
-    if (loggedUser) {
-        const authArea = document.getElementById('nav-auth');
+        .brand-name {
+            font-family: 'Press Start 2P', cursive;
+            color: #52FF52;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .nav-links { display: flex; gap: 20px; align-items: center; }
         
-        // 3. نمسح LOGIN ونحط الصورة والاسم اللي اختارهم الكود عشوائياً
-        authArea.innerHTML = `
-            <div style="display:flex; align-items:center; gap:12px; cursor:pointer;">
-                <span style="color:#52FF52; font-size:12px; font-weight:bold;">${loggedUser.name}</span>
-                <img src="${loggedUser.avatar}" style="width:45px; height:45px; border-radius:50%; border:2px solid #52FF52; object-fit:cover;">
-                <button onclick="logoutUser()" style="background:none; border:none; color:#ff4444; font-size:10px; cursor:pointer;">Logout</button>
-            </div>
-        `;
-    }
+        .nav-links a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 13px;
+            transition: 0.3s;
+        }
 
-    // دالة تسجيل الخروج عشان إذا يبي يطلع
-    function logoutUser() {
-        localStorage.removeItem('minecore_user');
-        location.reload(); // تحديث الصفحة عشان ترجع كلمة LOGIN
-    }
-</script>
+        .nav-links a:hover { color: #52FF52; }
+
+        /* زر اللوجن أو اسم المستخدم */
+        #auth-btn {
+            color: #52FF52;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .hero-text {
+            text-align: center;
+            margin-top: 100px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 30px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div id="user-brand">
+            <img id="user-avatar" src="" alt="Avatar">
+            <a href="index.html" class="brand-name">MINECLUB</a>
+        </div>
+
+        <div class="nav-links">
+            <a href="#">Packs</a>
+            <a href="#">Under Maintenance</a>
+            <a href="#">Mods</a>
+            <a href="#">Discord</a>
+            <div id="auth-container">
+                <a href="login.html" id="auth-btn">LOGIN</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero-text">
+        BEST MINECRAFT ASSETS WEBSITE
+    </div>
+
+    <script>
+        // 1. نجيب بيانات الرجال من الـ Local Storage
+        const user = JSON.parse(localStorage.getItem('minecore_user'));
+
+        if (user) {
+            // 2. إذا مسجل دخول: حط صورته على الشمال بدل اللوجو
+            const avatarImg = document.getElementById('user-avatar');
+            avatarImg.src = user.avatar;
+            avatarImg.style.display = "block";
+
+            // 3. غير كلمة LOGIN لاسم الرجال
+            const authBtn = document.getElementById('auth-btn');
+            authBtn.innerText = user.name;
+            authBtn.href = "#"; // عشان ما يرجع لصفحة اللوجن
+            
+            // إضافة خيار تسجيل خروج عند الضغط على الاسم
+            authBtn.onclick = function() {
+                if(confirm("Logout?")) {
+                    localStorage.removeItem('minecore_user');
+                    location.reload();
+                }
+            };
+        }
+    </script>
 </body>
 </html>
