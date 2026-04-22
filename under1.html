@@ -75,5 +75,29 @@
             }, 800);
         });
     </script>
+    <script>
+    // 1. نجيب بيانات الرجال من ذاكرة المتصفح
+    const loggedUser = JSON.parse(localStorage.getItem('minecore_user'));
+
+    // 2. إذا الرجال موجود (يعني مسجل دخول)
+    if (loggedUser) {
+        const authArea = document.getElementById('nav-auth');
+        
+        // 3. نمسح LOGIN ونحط الصورة والاسم اللي اختارهم الكود عشوائياً
+        authArea.innerHTML = `
+            <div style="display:flex; align-items:center; gap:12px; cursor:pointer;">
+                <span style="color:#52FF52; font-size:12px; font-weight:bold;">${loggedUser.name}</span>
+                <img src="${loggedUser.avatar}" style="width:45px; height:45px; border-radius:50%; border:2px solid #52FF52; object-fit:cover;">
+                <button onclick="logoutUser()" style="background:none; border:none; color:#ff4444; font-size:10px; cursor:pointer;">Logout</button>
+            </div>
+        `;
+    }
+
+    // دالة تسجيل الخروج عشان إذا يبي يطلع
+    function logoutUser() {
+        localStorage.removeItem('minecore_user');
+        location.reload(); // تحديث الصفحة عشان ترجع كلمة LOGIN
+    }
+</script>
 </body>
 </html>
