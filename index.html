@@ -2,51 +2,129 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>MineClub - Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MineCore - Assets</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Press+Start+2P&display=swap');
-        body { margin: 0; background: #0b0f19; color: white; font-family: 'Roboto', sans-serif; }
-        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; background: rgba(30, 41, 59, 0.2); border: 1px solid rgba(82, 255, 82, 0.2); border-radius: 50px; margin: 20px auto; width: 90%; backdrop-filter: blur(10px); }
-        .brand-area { display: flex; align-items: center; gap: 10px; }
-        #user-pic { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #52FF52; display: none; object-fit: cover; }
+
+        body { 
+            margin: 0; 
+            background-color: #0b0f19; /* اللون الغامق */
+            /* نقشة الخطوط شبه المخفية */
+            background-image: 
+                linear-gradient(rgba(82, 255, 82, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(82, 255, 82, 0.03) 1px, transparent 1px);
+            background-size: 45px 45px;
+            color: white; 
+            font-family: 'Roboto', sans-serif; 
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* الهيدر */
+        .navbar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 35px; background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(82, 255, 82, 0.15); border-radius: 50px;
+            margin: 20px auto; width: 88%; backdrop-filter: blur(12px);
+        }
+
+        .brand-area { display: flex; align-items: center; gap: 12px; }
+        /* صورة اللوجو المطلوبة */
+        .logo-img { width: 35px; height: 35px; object-fit: contain; }
+        /* صورة بروفايل المستخدم (تظهر بعد الدخول) */
+        #user-pic { width: 38px; height: 38px; border-radius: 50%; border: 2px solid #52FF52; display: none; object-fit: cover; }
+        
         .brand-name { font-family: 'Press Start 2P', cursive; color: #52FF52; font-size: 14px; text-decoration: none; }
-        .nav-links { display: flex; gap: 20px; align-items: center; }
-        .nav-links a { color: #ccc; text-decoration: none; font-size: 13px; }
-        #auth-link { color: #52FF52; font-weight: bold; text-decoration: none; cursor: pointer; }
+
+        .nav-links { display: flex; gap: 25px; align-items: center; }
+        .nav-links a { color: #aaa; text-decoration: none; font-size: 12px; font-weight: bold; transition: 0.3s; text-transform: uppercase; }
+        .nav-links a:hover { color: #52FF52; }
+
+        #auth-link { color: #52FF52; text-decoration: none; font-weight: bold; font-size: 13px; border: 1px solid #52FF52; padding: 6px 18px; border-radius: 20px; transition: 0.3s; }
+        #auth-link:hover { background: #52FF52; color: #000; }
+
+        /* المحتوى الرئيسي */
+        .hero { text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .hero h1 { font-family: 'Press Start 2P', cursive; font-size: 30px; line-height: 1.8; margin-bottom: 45px; text-shadow: 0 0 20px rgba(82, 255, 82, 0.2); }
+
+        /* الأزرار */
+        .btn-group { display: flex; gap: 20px; }
+        .btn { 
+            padding: 16px 40px; border-radius: 10px; font-weight: bold; text-decoration: none; 
+            text-transform: uppercase; font-size: 14px; transition: 0.4s; 
+        }
+        
+        .get-started { background: #52FF52; color: #000; border: 2px solid #52FF52; box-shadow: 0 0 15px rgba(82, 255, 82, 0.2); }
+        .get-started:hover { background: transparent; color: #52FF52; transform: scale(1.05); }
+
+        .discord-btn { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.4); }
+        .discord-btn:hover { border-color: #fff; background: rgba(255,255,255,0.1); transform: scale(1.05); }
+
     </style>
 </head>
-<body>
+<body onclick="playStartSound()">
+
+    <audio id="startup-sound">
+        <source src="https://www.soundjay.com/buttons/sounds/button-20.mp3" type="audio/mpeg">
+    </audio>
 
     <nav class="navbar">
         <div class="brand-area">
-            <img id="user-pic" src="" alt="Profile">
+            <img src="image.png" alt="Logo" class="logo-img">
+            <img id="user-pic" src="" alt="Avatar">
             <a href="index.html" class="brand-name">MINECLUB</a>
         </div>
         <div class="nav-links">
-            <a href="/resoursepacks.html">Packs</a>
-            <a href="/mods.html">Mods</a>
-            <a href="https://discord.gg/rcdSNZEhBF">Discord</a>
+            <a href="#">Packs</a>
+            <a href="#">Mods</a>
+            <a href="#">Support</a>
             <div id="auth-box">
                 <a href="login.html" id="auth-link">LOGIN</a>
             </div>
         </div>
     </nav>
 
+    <div class="hero">
+        <h1>BEST MINECRAFT ASSETS<br>WEBSITE</h1>
+        
+        <div class="btn-group">
+            <a href="login.html" class="btn get-started" id="main-btn">Get Started</a>
+            <a href="https://discord.gg/yourlink" target="_blank" class="btn discord-btn">Discord</a>
+        </div>
+    </div>
+
     <script>
-        const loggedUser = JSON.parse(localStorage.getItem('minecore_user'));
-        if (loggedUser) {
-            // إظهار صورة الرجال على الشمال بدل اللوجو القديم
+        // دالة تشغيل الصوت (تشتغل عند أول ضغطة في الصفحة لأن المتصفحات تمنع الصوت التلقائي)
+        let soundPlayed = false;
+        function playStartSound() {
+            if (!soundPlayed) {
+                document.getElementById('startup-sound').play();
+                soundPlayed = true;
+            }
+        }
+
+        // فحص حالة تسجيل الدخول
+        const user = JSON.parse(localStorage.getItem('minecore_user'));
+
+        if (user) {
+            // إظهار صورة الشخص بدل اللوجو أو جنبه
             const userPic = document.getElementById('user-pic');
-            userPic.src = loggedUser.avatar;
+            userPic.src = user.avatar;
             userPic.style.display = "block";
 
-            // إظهار اسمه على اليمين بدل كلمة LOGIN
+            // تغيير زر LOGIN لاسم الشخص
             const authLink = document.getElementById('auth-link');
-            authLink.innerText = loggedUser.name;
-            authLink.href = "#"; 
-            authLink.onclick = function() {
-                if(confirm("Logout?")) { localStorage.clear(); location.reload(); }
-            };
+            authLink.innerText = user.name;
+            authLink.href = "#";
+            authLink.onclick = () => { if(confirm("Logout?")) { localStorage.clear(); location.reload(); } };
+
+            // تغيير زر Get Started
+            const mainBtn = document.getElementById('main-btn');
+            mainBtn.innerText = "Enter Dashboard";
+            mainBtn.href = "dashboard.html";
         }
     </script>
 </body>
